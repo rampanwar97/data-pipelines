@@ -1,6 +1,18 @@
+# Basic function options
+x-function: &servicetemplates
+  labels:
+    function: "true"
+  networks:
+    - pipeline-networks
+  init: true
+  restart: always
+
 version: '3.8'
 services:
+
+#---> Zookeeper server
   zookeeper:
+    <<: *servicetemplates
     image: wurstmeister/zookeeper
     container_name: zookeeper
     ports:
@@ -11,10 +23,10 @@ services:
       retries: 3
       start_period: 10s
       timeout: 5s
-    networks:
-      - kafka-network
 
+#---> Kafka Broker server
   kafka:
+    <<: *servicetemplates
     image: wurstmeister/kafka
     container_name: kafka
     ports:
@@ -32,9 +44,8 @@ services:
       start_period: 10s
       timeout: 5s
     depends_on:
-      - zookeeper
-    networks:
-      - kafka-network
+      zookeeper:
+        condition: service_started
 networks:
-  kafka-network:
+  pipeline-networks:
     driver: bridge
