@@ -1,5 +1,5 @@
 -- init.sql
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS salse (
     user_id INT PRIMARY KEY,
     username VARCHAR(255),
     email VARCHAR(255),
